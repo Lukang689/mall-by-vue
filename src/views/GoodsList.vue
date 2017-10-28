@@ -65,8 +65,8 @@ import "./../assets/css/base.css";
 import "./../assets/css/product.css";
 import "./../assets/css/login.css";
 
-import NavHeader from "./NavHeader";
-import NavFooter from "./NavFooter";
+import NavHeader from "./../components/NavHeader";
+import NavFooter from "./../components/NavFooter";
 
 export default {
   data() {
