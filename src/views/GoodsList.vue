@@ -1,15 +1,9 @@
 <template>
     <div>
 <nav-header></nav-header>
-<!-- 面包屑导航 -->
-<div class="nav-breadcrumb-wrap">
-  <div class="container">
-    <nav class="nav-breadcrumb">
-      <a href="/">Home</a>
-      <span>Goods</span>
-    </nav>
-  </div>
-</div>
+<nav-bread>
+    <span slot="bread">Goods</span>
+</nav-bread>
 
 <!-- 价格排序 -->
 <div class="accessory-result-page accessory-page">
@@ -67,6 +61,7 @@ import "./../assets/css/login.css";
 
 import NavHeader from "./../components/NavHeader";
 import NavFooter from "./../components/NavFooter";
+import NavBread from "./../components/NavBread";
 
 export default {
   data() {
@@ -74,7 +69,8 @@ export default {
   },
   components: {
     NavHeader: NavHeader,
-    NavFooter: NavFooter
+    NavFooter: NavFooter,
+    NavBread: NavBread
   }
 };
 </script>
