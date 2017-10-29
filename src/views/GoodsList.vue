@@ -13,16 +13,16 @@
       <a href="javascript:void(0)" class="default cur">Default</a>
       <!-- 向下箭头 svg icon -->
       <a href="javascript:void(0)" class="price">Price <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
-      <a href="javascript:void(0)" class="filterby stopPop">Filter by</a>
+      <a href="javascript:void(0)" class="filterby stopPop" v-on:click="showFilterPop">Filter by</a>
     </div>
     <div class="accessory-result">
       <!-- filter价格筛选 -->
-      <div class="filter stopPop" id="filter">
+      <div class="filter stopPop" id="filter" v-bind:class="{'filterby-show':filterBy}">
         <dl class="filter-price">
           <dt>Price:</dt>
-          <dd><a href="javascript:void(0)">All</a></dd>
-          <dd>
-            <a href="javascript:void(0)">0 - 100</a>
+          <dd><a href="javascript:void(0)" v-bind:class="{'cur':priceChecked=='all'}" v-on:click="priceChecked='all'">All</a></dd>
+          <dd v-for="(item,index) in priceFilter":key="index">
+            <a href="javascript:void(0)" v-on:click="priceChecked=index" v-bind:class="{'cur':priceChecked==index}">{{item.startPrice+"-"+item.endPrice}}</a>
           </dd>
         </dl>
       </div>
@@ -50,6 +50,7 @@
     </div>
   </div>
 </div>
+<div class="md-overlay" v-show="overLayFlag" v-on:click="overLayClose"></div>
 <nav-footer></nav-footer>
 </div>
 </template>
@@ -67,7 +68,29 @@ import axios from "axios";
 export default {
   data() {
     return {
-      goodsList:[]
+      goodsList:[],
+      priceFilter:[
+        {
+          startPrice:0.00,
+          endPrice:100.00
+        },
+        {
+          startPrice:100.00,
+          endPrice:500.00
+        },
+        {
+          startPrice:500.00,
+          endPrice:1000.00
+        },
+        {
+          startPrice:1000.00,
+          endPrice:2000.00
+        }
+      ],
+      priceChecked:'all',
+      filterBy:false,
+      overLayFlag:false
+      
     };
   },
   components: {
@@ -76,11 +99,21 @@ export default {
     NavBread: NavBread
   },
   mounted:function(){this.getGoodsList();},
-  methods:{getGoodsList(){
+  methods:{
+    getGoodsList(){
     axios.get('/goods').then(res=>{
       var res = res.data;
       this.goodsList = res.result;
     })
-  }}
+  },
+    showFilterPop(){
+      this.filterBy = true;
+      this.overLayFlag = true;
+    },
+    overLayClose(){
+      this.filterBy = false;
+      this.overLayFlag = false;
+    }
+  }
 };
 </script>
