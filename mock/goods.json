@@ -1,0 +1,55 @@
+{
+    "status":"0",
+    "msg":"",
+    "result":[
+        {
+            "productId":"100001",
+            "productName":"蓝牙音响",
+            "productPrice":"2499",
+            "productImg":"1.jpg"
+        },
+        {
+            "productId":"100002",
+            "productName":"华为 p10",
+            "productPrice":"3999",
+            "productImg":"2.jpg"
+        },
+        {
+            "productId":"100003",
+            "productName":"iphone 8",
+            "productPrice":"5599",
+            "productImg":"3.jpg"
+        },
+        {
+            "productId":"100004",
+            "productName":"iphone x",
+            "productPrice":"6699",
+            "productImg":"4.jpg"
+        },
+        {
+            "productId":"100005",
+            "productName":"蓝牙音响",
+            "productPrice":"2499",
+            "productImg":"5.jpg"
+        },
+        {
+            "productId":"100006",
+            "productName":"华为 p10",
+            "productPrice":"3999",
+            "productImg":"6.jpg"
+        },
+        {
+            "productId":"100007",
+            "productName":"iphone 8",
+            "productPrice":"5599",
+            "productImg":"7.jpg"
+        },
+        {
+            "productId":"100008",
+            "productName":"iphone x",
+            "productPrice":"6699",
+            "productImg":"8.jpg"
+        }
+
+    ]
+}
