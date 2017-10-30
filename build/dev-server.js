@@ -37,12 +37,14 @@ const proxyTable = config.dev.proxyTable
 
 //创建一个express实例
 const app = express()
-const router = express.Router()
-const goodsData = require('./../mock/goods.json')
-router.get('/goods',function(req,res,next){
-  res.json(goodsData)
-})
-app.use(router)
+
+//mock json
+// const router = express.Router()
+// const goodsData = require('./../mock/goods.json')
+// router.get('/goods',function(req,res,next){
+//   res.json(goodsData)
+// })
+// app.use(router)
 
 //根据webpack配置文件创建Compiler对象
 const compiler = webpack(webpackConfig)

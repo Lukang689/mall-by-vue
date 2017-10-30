@@ -34,7 +34,7 @@
           <ul>
             <li v-for="(item,index) in goodsList":key="index">
               <div class="pic">
-                <a href="#"><img v-lazy="'/static/img/'+item.productImg" alt=""></a>
+                <a href="#"><img v-lazy="'/static/img/'+item.productImage" alt=""></a>
               </div>
               <div class="main">
                 <div class="name">{{item.productName}}</div>
@@ -101,9 +101,14 @@ export default {
   mounted:function(){this.getGoodsList();},
   methods:{
     getGoodsList(){
-    axios.get('/goods').then(res=>{
+    axios.get('/goods').then(res=>{  //axios不支持跨域请求，所以需要一个代理
       var res = res.data;
-      this.goodsList = res.result;
+      if(res.status=='0'){
+        this.goodsList = res.result.list;
+      }else{
+        this.goodsList = [];
+      }
+      
     })
   },
     showFilterPop(){
