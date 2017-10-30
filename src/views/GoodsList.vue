@@ -22,7 +22,7 @@
           <dt>Price:</dt>
           <dd><a href="javascript:void(0)" v-bind:class="{'cur':priceChecked=='all'}" v-on:click="priceChecked='all'">All</a></dd>
           <dd v-for="(item,index) in priceFilter":key="index">
-            <a href="javascript:void(0)" v-on:click="priceChecked=index" v-bind:class="{'cur':priceChecked==index}">{{item.startPrice+"-"+item.endPrice}}</a>
+            <a href="javascript:void(0)" v-on:click="setPriceFilter(index)" v-bind:class="{'cur':priceChecked==index}">{{item.startPrice+"-"+item.endPrice}}</a>
           </dd>
         </dl>
       </div>
@@ -34,7 +34,7 @@
           <ul>
             <li v-for="(item,index) in goodsList":key="index">
               <div class="pic">
-                <a href="#"><img v-bind:src="'/static/img/'+item.productImg" alt=""></a>
+                <a href="#"><img v-lazy="'/static/img/'+item.productImg" alt=""></a>
               </div>
               <div class="main">
                 <div class="name">{{item.productName}}</div>
@@ -113,6 +113,14 @@ export default {
     overLayClose(){
       this.filterBy = false;
       this.overLayFlag = false;
+    },
+    closePop(){
+      this.filterBy = false;
+      this.overLayFlag = false;
+    },
+    setPriceFilter(index){
+      this.priceChecked = index;
+      this.closePop();
     }
   }
 };
