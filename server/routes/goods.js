@@ -22,7 +22,11 @@ router.get('/', (req, res, next)=>{
     //  res.send("数据库response");
     let page = parseInt(req.param("page"));
     let pageSize = parseInt(req.param("pageSize"));
-    var sort = req.param("sort");
+    var sort = parseInt(req.param("sort"));
+
+    // let page = parseInt(req.params.page);
+    // let pageSize = parseInt(req.params.pageSize);
+    // var sort = parseInt(req.params.sort);
     let skip = (page-1)*pageSize;
     var params = {};
     let goodsModel = Goods.find(params).skip(skip).limit(pageSize);
