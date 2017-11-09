@@ -30,22 +30,41 @@
       <!-- search result accessories list -->
       <!-- 商品橱窗图 -->
       <div class="accessory-list-wrap">
-        <div class="accessory-list col-4">
-          <ul>
-            <li v-for="(item,index) in goodsList":key="index">
-              <div class="pic">
-                <a href="#"><img v-lazy="'/static/img/'+item.productImage" alt=""></a>
-              </div>
-              <div class="main">
-                <div class="name">{{item.productName}}</div>
-                <div class="price">{{item.salePrice}}</div>
-                <div class="btn-area">
-                  <a href="javascript:;" class="btn btn--m">加入购物车</a>
+        <!-- <div class="accessory-list col-4">
+          <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30">
+            <ul>
+              <li v-for="(item,index) in goodsList":key="index">
+                <div class="pic">
+                  <a href="#"><img v-lazy="'/static/img/'+item.productImage" alt=""></a>
                 </div>
-              </div>
-            </li>
-          </ul>
-        </div>
+                <div class="main">
+                  <div class="name">{{item.productName}}</div>
+                  <div class="price">{{item.salePrice}}</div>
+                  <div class="btn-area">
+                    <a href="javascript:;" class="btn btn--m">加入购物车</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div> -->
+          <div class="accessory-list col-4" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30">
+            <ul>
+              <li v-for="(item,index) in goodsList":key="index">
+                <div class="pic">
+                  <a href="#"><img v-lazy="'/static/img/'+item.productImage" alt=""></a>
+                </div>
+                <div class="main">
+                  <div class="name">{{item.productName}}</div>
+                  <div class="price">{{item.salePrice}}</div>
+                  <div class="btn-area">
+                    <a href="javascript:;" class="btn btn--m">加入购物车</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        
       </div>
     </div>
   </div>
@@ -92,8 +111,8 @@ export default {
       overLayFlag:false,
       page:1,
       pageSize:8,
-      sortFlag:true
-      
+      sortFlag:true,
+      busy:false
     };
   },
   components: {
@@ -103,7 +122,7 @@ export default {
   },
   mounted:function(){this.getGoodsList();},
   methods:{
-    getGoodsList(){
+    getGoodsList(flag){
     
     var param = {
       page:this.page,
@@ -113,11 +132,20 @@ export default {
     axios.get('/goods',{params:param}).then(res=>{  //axios不支持跨域请求，所以需要一个代理
       var res = res.data;
       if(res.status=='0'){
-        this.goodsList = res.result.list;
+        if(flag){
+          this.goodsList = this.goodsList.concat(this.goodsList = res.result.list);
+          if(res.result.count==0){
+            this.busy = true;
+          }else{
+            this.busy = false;
+          }
+        }else{
+          this.goodsList = res.result.list;
+        }
+        
       }else{
         this.goodsList = [];
       }
-      
     })
   },
   sortGoods(){
@@ -140,6 +168,13 @@ export default {
     setPriceFilter(index){
       this.priceChecked = index;
       this.closePop();
+    },
+    loadMore(){
+      this.busy=true;
+      setTimeout(() => {
+          this.page++;
+          this.getGoodsList(true);
+      },500);
     }
   }
 };

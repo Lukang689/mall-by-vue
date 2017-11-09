@@ -1,21 +1,19 @@
 var express = require('express');
 var router = express.Router();
-var mongoose = require('mongoose');
+
+//1.include mongoose in project
+var mongoose = require('mongoose');  
 var Goods = require('../models/goods');
 
+//2.open a collection to the DB
 mongoose.connect('mongodb://127.0.0.1:27017/dumall');
 
-mongoose.connection.on("connected",()=>{
-    console.log("数据库连接成功")
+let db = mongoose.connection;
+db.once("open",()=>{
+    console.log("connection success");
 });
+db.on("err",console.error.bind(console,"connection error"));
 
-mongoose.connection.on("err",()=>{
-    console.log("数据库连接出错")
-});
-
-mongoose.connection.on("disconnected",()=>{
-    console.log("数据库连接已断开")
-});
 /* GET home page. */
 router.get('/', (req, res, next)=>{
 //   res.render('index', { title: 'Express' });
