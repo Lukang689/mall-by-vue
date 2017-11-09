@@ -20,7 +20,7 @@
       <div class="filter stopPop" id="filter" v-bind:class="{'filterby-show':filterBy}">
         <dl class="filter-price">
           <dt>Price:</dt>
-          <dd><a href="javascript:void(0)" v-bind:class="{'cur':priceChecked=='all'}" v-on:click="priceChecked='all'">All</a></dd>
+          <dd><a href="javascript:void(0)" v-bind:class="{'cur':priceChecked=='all'}" v-on:click="allShow">All</a></dd>
           <dd v-for="(item,index) in priceFilter":key="index">
             <a href="javascript:void(0)" v-on:click="setPriceFilter(index)" v-bind:class="{'cur':priceChecked==index}">{{item.startPrice+"-"+item.endPrice}}</a>
           </dd>
@@ -63,6 +63,7 @@
                 </div>
               </li>
             </ul>
+            <img class="loading-img" src="./../assets/loading-spinning-bubbles.svg" alt="loading..." v-show="loading">
           </div>
         
       </div>
@@ -90,20 +91,20 @@ export default {
       goodsList:[],
       priceFilter:[
         {
-          startPrice:0.00,
-          endPrice:100.00
+          startPrice:0,
+          endPrice:100
         },
         {
-          startPrice:100.00,
-          endPrice:500.00
+          startPrice:100,
+          endPrice:500
         },
         {
-          startPrice:500.00,
-          endPrice:1000.00
+          startPrice:500,
+          endPrice:1000
         },
         {
-          startPrice:1000.00,
-          endPrice:2000.00
+          startPrice:1000,
+          endPrice:5000
         }
       ],
       priceChecked:'all',
@@ -112,7 +113,8 @@ export default {
       page:1,
       pageSize:8,
       sortFlag:true,
-      busy:false
+      busy:false,
+      loading:false
     };
   },
   components: {
@@ -123,14 +125,16 @@ export default {
   mounted:function(){this.getGoodsList();},
   methods:{
     getGoodsList(flag){
-    
     var param = {
       page:this.page,
       pageSize:this.pageSize,
-      sort:this.sortFlag?1:-1
+      sort:this.sortFlag?1:-1,
+      priceLevel:this.priceChecked
     }
+      this.loading = true;
     axios.get('/goods',{params:param}).then(res=>{  //axios不支持跨域请求，所以需要一个代理
       var res = res.data;
+      this.loading = false;
       if(res.status=='0'){
         if(flag){
           this.goodsList = this.goodsList.concat(this.goodsList = res.result.list);
@@ -147,11 +151,13 @@ export default {
         this.goodsList = [];
       }
     })
+ 
   },
   sortGoods(){
     this.sortFlag = ! this.sortFlag;
     this.page = 1;
     this.getGoodsList();
+    this.clickLoadMore();
   },
     showFilterPop(){
       this.filterBy = true;
@@ -168,6 +174,9 @@ export default {
     setPriceFilter(index){
       this.priceChecked = index;
       this.closePop();
+      this.page = 1;
+      this.clickLoadMore();
+      this.getGoodsList();
     },
     loadMore(){
       this.busy=true;
@@ -175,6 +184,19 @@ export default {
           this.page++;
           this.getGoodsList(true);
       },500);
+    },
+    clickLoadMore(){
+       this.busy=false;
+        setTimeout(() => {
+          this.page++;
+          this.getGoodsList(true);
+      },500);
+    },
+    allShow(){
+      this.priceChecked='all';
+      this.page = 1;
+      this.getGoodsList();
+      this.clickLoadMore();
     }
   }
 };
