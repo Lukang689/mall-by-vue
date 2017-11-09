@@ -579,3 +579,8 @@
     padding-top: 20px;
   }
 }
+
+  .loading-img{
+    margin-left:50%;
+    transform:translate(-50%,-50%);
+  }
